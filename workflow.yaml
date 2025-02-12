@@ -1,0 +1,96 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: Pull-Request
+  title: Pull-Request-Creator
+  description: Create a new PR
+spec:
+  owner: khushi.sharma@harness.io
+  type: service
+  parameters:
+    - title: Enter your details
+      properties:
+        gitusername:
+          title: Repository Owner Username
+          description: Enter the repository owner username
+          type: string
+        repopicker:
+          title: GitHub Repositories
+          type: string
+          description: Pick one of GitHub Repos
+          ui:field: SelectFieldFromApi
+          ui:options:
+            path: proxy/github-api/users/{{parameters.gitusername}}/repos
+            valueSelector: full_name
+            contextData: 
+              reponame: name
+              branch: default_branch
+              type: visibility                 
+        repositoryname:
+          title: Repository Name
+          readonly: true
+          description: Check your Repository Name
+          type: string            
+          ui:field: ContextViewer
+          ui:options:
+            getContextData: {{ formContext.reponame }}
+        branchName:
+          title: Default Branch
+          readonly: true
+          description: Default Branch
+          type: string
+          ui:field: ContextViewer
+          ui:options:
+            getContextData: {{ formContext.branch }}          
+        typeName:
+          title: Visibility
+          readonly: true
+          description: Repository Visibility
+          type: string     
+          ui:field: ContextViewer
+          ui:options:
+            getContextData: {{ formContext.type }}     
+        titlePR:
+          title: Title of PR
+          description: Enter the Title of your Pull Request
+          type: string
+        newBranch:
+          title: Branch Name for PR
+          description: Enter the name of the branch where your changes are implemented
+          type: string
+        baseBranch:
+          title: Branch Name where you want your changes pulled into
+          description: Enter the name of the branch you want the changes pulled into. 
+          type: string
+        customValidate:
+          ui:field: ValidateAndFetch
+          ui:options:
+            button: 
+              title: Create a Pull Request
+            path: proxy/github-api/repos/{{parameters.username}}/{{parameters.repositoryname}}/pulls
+            contextData:
+              prnumber: number
+            request: 
+              method: POST
+              headers: 
+                Content-Type: application/json
+              body: 
+                title: {{parameters.titlePR}}
+                head: {{parameters.newBranch}}
+                base: {{parameters.baseBranch}}   
+  steps:
+    - id: trigger
+      name: Writing the GitSync Variable
+      action: trigger:harness-custom-pipeline
+      input:
+        url: https://qa.harness.io/ng/account/zEaak-FLS425IEO7OLzMUg/module/idp-admin/orgs/default/projects/idpprojectsc/pipelines/DummyPipeline/pipeline-studio/?storeType=INLINE&stageId=DummyStage&sectionId=EXECUTION
+        inputset: 
+          "username": ${{ parameters.username }}
+          "name": ${{ parameters.name }}
+          "pipeline.stages.GitsyncStageTemplate.variables.greetings": ${{ parameters['pipeline.stages.GitsyncStageTemplate.variables.greetings'] }}
+        apikey: ${{ parameters.token }}
+        enableVariableMapping: true
+  output:
+    links:
+      - title: Pipeline Details
+        url: ${{ steps.trigger.output.PipelineUrl }}
