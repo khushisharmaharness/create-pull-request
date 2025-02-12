@@ -63,6 +63,7 @@ spec:
           description: Enter the name of the branch you want the changes pulled into. 
           type: string
         customValidate:
+          type: string
           ui:field: ValidateAndFetch
           ui:options:
             button: 
