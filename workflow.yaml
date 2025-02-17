@@ -68,7 +68,7 @@ spec:
           ui:options:
             button: 
               title: Create a Pull Request
-            path: proxy/github-api/repos/{{parameters.gitusername}}/{{parameters.repositoryname}}/pulls
+            path: proxy/github-api/repos/Debanitrkl/{{parameters.repositoryname}}/pulls
             contextData:
               prnumber: number
             request: 
