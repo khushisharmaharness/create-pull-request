@@ -22,7 +22,7 @@ spec:
           ui:options:
             path: proxy/github-api/users/{{parameters.gitusername}}/repos
             valueSelector: full_name
-            setContextData: 
+            contextData: 
               reponame: name
               branch: default_branch
               type: visibility                 
@@ -69,7 +69,7 @@ spec:
             button: 
               title: Create a Pull Request
             path: proxy/github-api/repos/{{parameters.gitusername}}/{{parameters.repositoryname}}/pulls
-            setContextData:
+            contextData:
               prnumber: number
             request: 
               method: POST
