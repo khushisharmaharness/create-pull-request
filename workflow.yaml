@@ -1,7 +1,7 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: Pull-Request
+  name: Pull-Request-Creator
   title: Pull-Request-Creator
   description: Create a new PR
 spec:
@@ -22,7 +22,7 @@ spec:
           ui:options:
             path: proxy/github-api/users/{{parameters.gitusername}}/repos
             valueSelector: full_name
-            contextData: 
+            setContextData: 
               reponame: name
               branch: default_branch
               type: visibility                 
@@ -69,19 +69,16 @@ spec:
             button: 
               title: Create a Pull Request
             path: proxy/github-api/repos/{{parameters.gitusername}}/{{parameters.repositoryname}}/pulls
-            contextData:
+            setContextData:
               prnumber: number
             request: 
               method: POST
               headers: 
                 Content-Type: application/json
               body: 
-                title:
-                - {{parameters.titlePR}}
-                head: 
-                - {{parameters.newBranch}}
-                base: 
-                - {{parameters.baseBranch}}   
+                title: "{{parameters.titlePR}}"
+                head: "{{parameters.newBranch}}"
+                base: "{{parameters.baseBranch}}"
   steps:
     - id: trigger
       name: Writing the GitSync Variable
