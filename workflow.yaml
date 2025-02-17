@@ -76,12 +76,9 @@ spec:
               headers: 
                 Content-Type: application/json
               body: 
-                title: 
-                - {{parameters.titlePR}}
-                head: 
-                - {{parameters.newBranch}}
-                base: 
-                - {{parameters.baseBranch}}
+                title: "{{parameters.titlePR}}"
+                head: "{{parameters.newBranch}}"
+                base: "{{parameters.baseBranch}}"
   steps:
     - id: trigger
       name: Writing the GitSync Variable
