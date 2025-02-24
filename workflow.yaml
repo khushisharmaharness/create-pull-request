@@ -33,15 +33,7 @@ spec:
           type: string            
           ui:field: ContextViewer
           ui:options:
-            getContextData: {{ formContext.reponame }}
-        branchName:
-          title: Default Branch
-          readonly: true
-          description: Default Branch
-          type: string
-          ui:field: ContextViewer
-          ui:options:
-            getContextData: {{ formContext.branch }}          
+            getContextData: {{ formContext.reponame }}          
         typeName:
           title: Visibility
           readonly: true
@@ -49,7 +41,14 @@ spec:
           type: string     
           ui:field: ContextViewer
           ui:options:
-            getContextData: {{ formContext.type }}     
+            getContextData: {{ formContext.type }}
+        branchName:
+          title: Default Branch
+          description: Default Branch where you want the changes pulled into. 
+          type: string
+          ui:field: ContextViewer
+          ui:options:
+            getContextData: {{ formContext.branch }}
         titlePR:
           title: Title of PR
           description: Enter the Title of your Pull Request
@@ -57,10 +56,6 @@ spec:
         newBranch:
           title: Branch Name for PR
           description: Enter the name of the branch where your changes are implemented
-          type: string
-        baseBranch:
-          title: Branch Name where you want your changes pulled into
-          description: Enter the name of the branch you want the changes pulled into. 
           type: string
         customValidate:
           type: string
@@ -78,7 +73,7 @@ spec:
               body: 
                 title: "{{parameters.titlePR}}"
                 head: "{{parameters.newBranch}}"
-                base: "{{parameters.baseBranch}}"
+                base: "{{parameters.branchName}}"
   steps:
     - id: trigger
       name: Writing the GitSync Variable
