@@ -65,7 +65,6 @@ spec:
               title: Create a Pull Request
             path: proxy/github-api/repos/{{parameters.gitusername}}/{{parameters.repositoryname}}/pulls
             setContextData:
-              prnumber: number
               prurl: html_url
             request: 
               method: POST
