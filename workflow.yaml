@@ -74,6 +74,14 @@ spec:
                 title: "{{parameters.titlePR}}"
                 head: "{{parameters.newBranch}}"
                 base: "{{parameters.branchName}}"
+          latestprurl:
+            title: Pull Request URL
+            readonly: true
+            description: Check your PR
+            type: string            
+            ui:field: ContextViewer
+            ui:options:
+              getContextData: {{ formContext.prurl }}  
   steps:
     - id: trigger
       name: Writing the GitSync Variable
